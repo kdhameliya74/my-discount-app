@@ -1,0 +1,13 @@
+{
+  "ratings": {
+    "stars": {
+      "label": "Ratings"
+    },
+    "home": {
+      "recommendationText": "Recommended Product!"
+    }
+  },
+  "volume_discount": {
+    "widget_text": "Buy {{ min_qty }}, get {{ percent }}% off"
+  }
+}

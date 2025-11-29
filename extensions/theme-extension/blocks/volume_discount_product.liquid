@@ -1,0 +1,35 @@
+{% liquid
+  assign show_widget = false
+  assign config_field = shop.metafields.volume_discount.config
+
+  if product and config_field and config_field.value != blank
+    assign config = config_field.value | parse_json
+    assign percent_off = config.percentOff | default: 0 | times: 1
+    assign min_qty = config.minQty | default: 2 | times: 1
+    assign configured_products = config.products
+
+    assign product_gid = product.admin_graphql_api_id
+    if product_gid == blank
+      assign product_gid = 'gid://shopify/Product/' | append: product.id
+    endif
+
+    if configured_products contains product_gid and percent_off > 0
+      assign show_widget = true
+    endif
+  endif
+%}
+
+{% if show_widget %}
+  {% render 'volume_discount_message', min_qty: min_qty, percent_off: percent_off %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Volume discount notice",
+  "target": "section",
+  "templates": [
+    "product"
+  ]
+}
+{% endschema %}
+
